@@ -1,24 +1,19 @@
 ```
-# Go build artifacts
+# Build artifacts
+dist/
+build/
 *.o
-*.a
-*.so
+*.obj
 *.exe
 *.dll
+*.so
+*.a
 *.out
-*.obj
-
-# Go cache and test
-*.test
-*.prof
-go/pkg/
-go/bin/
-
-# WASM related
-*.wasm
 
 # Dependencies
 vendor/
+*.mod
+*.sum
 
 # Logs and temp files
 *.log
@@ -27,7 +22,7 @@ vendor/
 # Environment
 .env
 .env.local
-*.env.*
+.env.*
 
 # Editors
 .vscode/
@@ -36,11 +31,11 @@ vendor/
 *.swo
 
 # Coverage
-.coverage
 coverage/
 htmlcov/
+.coverage
 
-# OS specific
-.DS_Store
-Thumbs.db
+# Go specific
+*.test
+*.prof
 ```
