@@ -24,6 +24,7 @@ func main() {
 	js.Global().Set("goParseCSV", js.FuncOf(parseCSV))
 	js.Global().Set("goParseJSON", js.FuncOf(parseJSON))
 	js.Global().Set("goDetectGaps", js.FuncOf(detectGaps))
+	js.Global().Set("goResampleCandles", js.FuncOf(resampleCandles))
 	js.Global().Set("goRunBacktest", js.FuncOf(runBacktest))
 
 	// Keep the Go program running
@@ -93,6 +94,33 @@ func detectGaps(this js.Value, args []js.Value) interface{} {
 	}
 
 	result, err := json.Marshal(gaps)
+	if err != nil {
+		return jsonError(err.Error())
+	}
+
+	return string(result)
+}
+
+// resampleCandles resamples candle data to a higher timeframe
+func resampleCandles(this js.Value, args []js.Value) interface{} {
+	if len(args) < 2 {
+		return jsonError("Missing arguments: candlesJSON and timeframe")
+	}
+
+	candlesJSON := args[0].String()
+	timeframe := args[1].String()
+
+	var candles []data.Candle
+	if err := json.Unmarshal([]byte(candlesJSON), &candles); err != nil {
+		return jsonError(err.Error())
+	}
+
+	resampled, err := data.ResampleCandles(candles, timeframe)
+	if err != nil {
+		return jsonError(err.Error())
+	}
+
+	result, err := json.Marshal(resampled)
 	if err != nil {
 		return jsonError(err.Error())
 	}

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Backtesting Framework</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h1>Backtest Framework</h1>
+            
+            <!-- Data Source Section -->
+            <section class="sidebar-section">
+                <h2>Data Source</h2>
+                <div class="form-group">
+                    <label for="dataSource">Select Source:</label>
+                    <select id="dataSource">
+                        <option value="upload">Upload File (CSV/JSON)</option>
+                        <option value="binance">Binance Crypto Data</option>
+                        <option value="sample">Sample Data</option>
+                    </select>
+                </div>
+                
+                <!-- Upload File -->
+                <div id="uploadSection" class="data-source-section">
+                    <input type="file" id="fileInput" accept=".csv,.json">
+                    <div class="form-group">
+                        <label for="delimiter">CSV Delimiter:</label>
+                        <select id="delimiter">
+                            <option value=",">Comma (,)</option>
+                            <option value=";">Semicolon (;)</option>
+                            <option value="	">Tab</option>
+                        </select>
+                    </div>
+                    <button id="btnLoadFile" class="btn btn-primary">Load File</button>
+                </div>
+                
+                <!-- Binance Section -->
+                <div id="binanceSection" class="data-source-section" style="display:none;">
+                    <div class="form-group">
+                        <label for="binanceSymbol">Symbol:</label>
+                        <select id="binanceSymbol">
+                            <option value="BTCUSDT">BTCUSDT</option>
+                            <option value="ETHUSDT">ETHUSDT</option>
+                            <option value="BNBUSDT">BNBUSDT</option>
+                            <option value="ADAUSDT">ADAUSDT</option>
+                            <option value="SOLUSDT">SOLUSDT</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="binanceInterval">Timeframe:</label>
+                        <select id="binanceInterval">
+                            <option value="1m">1 minute</option>
+                            <option value="5m">5 minutes</option>
+                            <option value="15m">15 minutes</option>
+                            <option value="1h">1 hour</option>
+                            <option value="4h">4 hours</option>
+                            <option value="1d">1 day</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="binanceStart">Start Date:</label>
+                        <input type="date" id="binanceStart">
+                    </div>
+                    <div class="form-group">
+                        <label for="binanceEnd">End Date:</label>
+                        <input type="date" id="binanceEnd">
+                    </div>
+                    <button id="btnLoadBinance" class="btn btn-primary">Load from Binance</button>
+                </div>
+                
+                <!-- Sample Data Section -->
+                <div id="sampleSection" class="data-source-section" style="display:none;">
+                    <p>Generate sample data for testing</p>
+                    <button id="btnLoadSample" class="btn btn-primary">Generate Sample Data</button>
+                </div>
+            </section>
+            
+            <!-- Data Preview Section -->
+            <section class="sidebar-section" id="dataPreviewSection" style="display:none;">
+                <h2>Data Preview</h2>
+                <div id="dataInfo"></div>
+                <div id="columnMapping"></div>
+                
+                <!-- Resample Section -->
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label for="resampleTimeframe">Resample to Timeframe:</label>
+                    <select id="resampleTimeframe">
+                        <option value="1m">1 minute</option>
+                        <option value="3m">3 minutes</option>
+                        <option value="5m">5 minutes</option>
+                        <option value="15m">15 minutes</option>
+                        <option value="30m">30 minutes</option>
+                        <option value="1h">1 hour</option>
+                        <option value="2h">2 hours</option>
+                        <option value="4h">4 hours</option>
+                        <option value="6h">6 hours</option>
+                        <option value="8h">8 hours</option>
+                        <option value="12h">12 hours</option>
+                        <option value="1d">1 day</option>
+                        <option value="3d">3 days</option>
+                        <option value="1w">1 week</option>
+                        <option value="1M">1 month</option>
+                    </select>
+                </div>
+                <button id="btnResample" class="btn btn-secondary">Resample Data</button>
+            </section>
+            
+            <!-- Strategy Section -->
+            <section class="sidebar-section">
+                <h2>Strategy</h2>
+                <div class="form-group">
+                    <label for="strategyType">Strategy:</label>
+                    <select id="strategyType">
+                        <option value="sma_crossover">SMA Crossover</option>
+                    </select>
+                </div>
+                <div id="strategyParams">
+                    <div class="form-group">
+                        <label for="fastPeriod">Fast Period:</label>
+                        <input type="number" id="fastPeriod" value="10" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="slowPeriod">Slow Period:</label>
+                        <input type="number" id="slowPeriod" value="20" min="1">
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Settings Section -->
+            <section class="sidebar-section">
+                <h2>Backtest Settings</h2>
+                <div class="form-group">
+                    <label for="initialCapital">Initial Capital:</label>
+                    <input type="number" id="initialCapital" value="10000" min="100">
+                </div>
+                <div class="form-group">
+                    <label for="commissionMarket">Commission (Market):</label>
+                    <input type="number" id="commissionMarket" value="0.001" step="0.0001" min="0">
+                    <small>e.g., 0.001 = 0.1%</small>
+                </div>
+                <div class="form-group">
+                    <label for="commissionLimit">Commission (Limit):</label>
+                    <input type="number" id="commissionLimit" value="0.0005" step="0.0001" min="0">
+                    <small>e.g., 0.0005 = 0.05%</small>
+                </div>
+                <div class="form-group">
+                    <label for="slippage">Slippage:</label>
+                    <input type="number" id="slippage" value="0" step="0.0001" min="0">
+                </div>
+            </section>
+            
+            <!-- Run Button -->
+            <section class="sidebar-section">
+                <button id="btnRunBacktest" class="btn btn-success btn-large" disabled>Run Backtest</button>
+            </section>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <div id="loadingIndicator" class="loading" style="display:none;">
+                <div class="spinner"></div>
+                <p>Loading WebAssembly...</p>
+            </div>
+            
+            <div id="gapWarning" class="warning" style="display:none;"></div>
+            
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="summary">Summary</button>
+                <button class="tab-btn" data-tab="equity">Equity Curve</button>
+                <button class="tab-btn" data-tab="drawdown">Drawdown</button>
+                <button class="tab-btn" data-tab="trades">Trades</button>
+            </div>
+            
+            <div class="tab-content" id="tab-summary">
+                <div id="metricsCards" class="metrics-grid"></div>
+            </div>
+            
+            <div class="tab-content" id="tab-equity" style="display:none;">
+                <canvas id="equityChart"></canvas>
+            </div>
+            
+            <div class="tab-content" id="tab-drawdown" style="display:none;">
+                <canvas id="drawdownChart"></canvas>
+            </div>
+            
+            <div class="tab-content" id="tab-trades" style="display:none;">
+                <table id="tradesTable">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Type</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Commission</th>
+                            <th>PnL</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    
+    <script src="assets/wasm/wasm_exec.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -361,3 +361,106 @@ func IsSortedByTime(candles []Candle) bool {
 	}
 	return true
 }
+
+// ResampleCandles aggregates candles to a higher timeframe
+// targetTimeframe can be: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M
+func ResampleCandles(candles []Candle, targetTimeframe string) ([]Candle, error) {
+	if len(candles) == 0 {
+		return []Candle{}, nil
+	}
+
+	targetMs, err := timeframeToMs(targetTimeframe)
+	if err != nil {
+		return nil, err
+	}
+
+	// Sort candles by time
+	sorted := make([]Candle, len(candles))
+	copy(sorted, candles)
+	for i := 0; i < len(sorted)-1; i++ {
+		if sorted[i].Time.After(sorted[i+1].Time) {
+			sorted[i], sorted[i+1] = sorted[i+1], sorted[i]
+		}
+	}
+
+	var resampled []Candle
+	var current *Candle
+
+	for _, candle := range sorted {
+		// Get the start of the target timeframe bucket
+		bucketStart := getBucketStart(candle.Time, targetMs)
+
+		if current == nil {
+			// Start new bucket
+			current = &Candle{
+				Time:   time.UnixMilli(bucketStart.UnixMilli()),
+				Open:   candle.Open,
+				High:   candle.High,
+				Low:    candle.Low,
+				Close:  candle.Close,
+				Volume: candle.Volume,
+			}
+		} else if candle.Time.UnixMilli() >= (current.Time.UnixMilli() + targetMs) {
+			// Save current bucket and start new one
+			resampled = append(resampled, *current)
+			current = &Candle{
+				Time:   time.UnixMilli(bucketStart.UnixMilli()),
+				Open:   candle.Open,
+				High:   candle.High,
+				Low:    candle.Low,
+				Close:  candle.Close,
+				Volume: candle.Volume,
+			}
+		} else {
+			// Aggregate into current bucket
+			if candle.High > current.High {
+				current.High = candle.High
+			}
+			if candle.Low < current.Low {
+				current.Low = candle.Low
+			}
+			current.Close = candle.Close
+			current.Volume += candle.Volume
+		}
+	}
+
+	// Don't forget the last bucket
+	if current != nil {
+		resampled = append(resampled, *current)
+	}
+
+	return resampled, nil
+}
+
+// timeframeToMs converts timeframe string to milliseconds
+func timeframeToMs(tf string) (int64, error) {
+	intervals := map[string]int64{
+		"1m":  60000,
+		"3m":  180000,
+		"5m":  300000,
+		"15m": 900000,
+		"30m": 1800000,
+		"1h":  3600000,
+		"2h":  7200000,
+		"4h":  14400000,
+		"6h":  21600000,
+		"8h":  28800000,
+		"12h": 43200000,
+		"1d":  86400000,
+		"3d":  259200000,
+		"1w":  604800000,
+		"1M":  2592000000, // Approximate
+	}
+
+	if ms, ok := intervals[tf]; ok {
+		return ms, nil
+	}
+	return 0, fmt.Errorf("unknown timeframe: %s", tf)
+}
+
+// getBucketStart returns the start of the timeframe bucket for a given time
+func getBucketStart(t time.Time, intervalMs int64) time.Time {
+	ms := t.UnixMilli()
+	bucketStart := (ms / intervalMs) * intervalMs
+	return time.UnixMilli(bucketStart)
+}
