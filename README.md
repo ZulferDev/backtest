@@ -163,7 +163,13 @@ cd go
 go test ./...
 ```
 
-All packages include unit tests with >80% coverage for critical functions.
+All packages include unit tests with high coverage for critical functions:
+- `data`: 89.2% coverage (parsing, column mapping, gap detection, resampling)
+- `indicators`: 98.3% coverage (SMA, EMA, RSI)
+- `engine`: 83.5% coverage (backtest execution, order management, grid search)
+- `strategy`: 80.0% coverage (SMA crossover strategy)
+
+Total: 29 unit tests passing
 
 ## Browser Compatibility
 
@@ -172,13 +178,17 @@ All packages include unit tests with >80% coverage for critical functions.
 - Safari 11+
 - Edge 16+
 
-## Limitations (MVP)
+## Limitations (MVP - Fase 1)
 
 - Single symbol only
-- No tick data support
+- No tick data support (OHLCV only)
 - Limited to preset strategies (SMA Crossover)
-- Basic column mapping (auto-detect only)
-- No chart visualization yet (metrics and tables only)
+- Basic column mapping (auto-detect)
+- Chart visualization basic (canvas-based equity curve and drawdown)
+- Grid search backend implemented, UI pending
+- No custom JavaScript strategy editor yet
+- No walk-forward analysis UI yet
+- No Parquet file support yet
 
 ## Roadmap
 
