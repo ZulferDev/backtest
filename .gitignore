@@ -6,28 +6,33 @@ build/
 
 # Dependencies
 node_modules/
-vendor/
-
-# Logs and temp files
-*.log
-*.tmp
 
 # Environment
 .env
 .env.local
 *.env.*
 
+# Logs and temp files
+*.log
+*.tmp
+
 # Editors
 .vscode/
 .idea/
 
-# Go specific
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Go
 *.o
 *.a
 *.so
 *.dylib
 *.dll
-*_test
-*.prof
-cover.out
+*.exe
+*.out
+coverage.out
 ```
