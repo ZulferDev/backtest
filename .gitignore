@@ -1,0 +1,46 @@
+```
+# Go build artifacts
+*.o
+*.a
+*.so
+*.exe
+*.dll
+*.out
+*.obj
+
+# Go cache and test
+*.test
+*.prof
+go/pkg/
+go/bin/
+
+# WASM related
+*.wasm
+
+# Dependencies
+vendor/
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Coverage
+.coverage
+coverage/
+htmlcov/
+
+# OS specific
+.DS_Store
+Thumbs.db
+```
