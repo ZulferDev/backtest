@@ -7,13 +7,13 @@ import (
 
 // Engine is the main backtest engine
 type Engine struct {
-	settings      strategy.Settings
-	candles       []data.Candle
-	trades        []strategy.Trade
-	equityCurve   []float64
-	drawdowns     []float64
-	position      float64 // >0 long, <0 short
-	cash          float64
+	settings       strategy.Settings
+	candles        []data.Candle
+	trades         []strategy.Trade
+	equityCurve    []float64
+	drawdowns      []float64
+	position       float64 // >0 long, <0 short
+	cash           float64
 	orderIDCounter int64
 	pendingOrders  map[int64]*strategy.Order
 }

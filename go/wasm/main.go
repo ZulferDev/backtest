@@ -11,12 +11,12 @@ import (
 
 // BacktestSettings represents the settings sent from JavaScript
 type BacktestSettings struct {
-	InitialCapital    float64 `json:"initialCapital"`
-	CommissionMarket  float64 `json:"commissionMarket"`
-	CommissionLimit   float64 `json:"commissionLimit"`
-	Slippage          float64 `json:"slippage"`
-	FastPeriod        int     `json:"fastPeriod"`
-	SlowPeriod        int     `json:"slowPeriod"`
+	InitialCapital   float64 `json:"initialCapital"`
+	CommissionMarket float64 `json:"commissionMarket"`
+	CommissionLimit  float64 `json:"commissionLimit"`
+	Slippage         float64 `json:"slippage"`
+	FastPeriod       int     `json:"fastPeriod"`
+	SlowPeriod       int     `json:"slowPeriod"`
 }
 
 func main() {
