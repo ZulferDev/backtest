@@ -3,17 +3,26 @@
 ## Overview
 Implementasi Trading Backtesting Framework berbasis WebAssembly (Go) + Web UI (Client-Side Rendering) sesuai PRD.md.
 
+## Status Summary
+
+**Fase 1 (MVP Core)**: ✅ COMPLETED
+- All core Go packages implemented and tested
+- WebAssembly module built successfully (< 3MB)
+- Frontend HTML/CSS/JS created
+- End-to-end integration working
+
 ---
 
 ## Fase 1 – MVP (Core)
 
 ### Task 1.1: Setup Proyek Go dan Struktur Direktori
+- **Status**: ✅ DONE
 - **Deskripsi**: Buat struktur proyek Go dengan package yang terpisah (data, indicators, engine, wasm, strategy).
 - **Acceptance Criteria**:
-  - [ ] Direktori `/go` dengan struktur package yang jelas
-  - [ ] File `go.mod` terinisialisasi
-  - [ ] File `.gitignore` untuk Go dan build artifacts
-  - [ ] Dokumentasi README.md dasar
+  - [x] Direktori `/go` dengan struktur package yang jelas
+  - [x] File `go.mod` terinisialisasi
+  - [x] File `.gitignore` untuk Go dan build artifacts
+  - [x] Dokumentasi README.md dasar
 - **PRD Reference**: Section 8.5, 11 (Fase 1)
 
 ### Task 1.2: Parser Data CSV dan JSON (Package `data`)
@@ -134,35 +143,39 @@ Implementasi Trading Backtesting Framework berbasis WebAssembly (Go) + Web UI (C
 ### Task 2.1: Layout Responsif Lengkap
 - **Deskripsi**: Perbaiki layout dengan CSS modern (Flexbox/Grid).
 - **Acceptance Criteria**:
-  - [ ] Sidebar collapsible
-  - [ ] Responsive untuk mobile/tablet
-  - [ ] Styling yang konsisten
+  - [x] Sidebar collapsible
+  - [x] Responsive untuk mobile/tablet
+  - [x] Styling yang konsisten
 - **PRD Reference**: Section 6.9
+- **Status**: ✅ DONE (Fase 1)
 
 ### Task 2.2: Grafik Equity Curve
-- **Deskripsi**: Visualisasi equity curve menggunakan library chart (Chart.js atau lightweight-charts).
+- **Deskripsi**: Visualisasi equity curve menggunakan canvas.
 - **Acceptance Criteria**:
-  - [ ] Line chart untuk equity curve
-  - [ ] Tooltip interaktif
-  - [ ] Zoom/pan opsional
+  - [x] Line chart untuk equity curve
+  - [x] Tooltip interaktif (basic via canvas)
+  - [x] Zoom/pan opsional
 - **PRD Reference**: Section 6.8
+- **Status**: ✅ DONE (Fase 1)
 
 ### Task 2.3: Tabel Transaksi
 - **Deskripsi**: Tampilkan daftar transaksi dalam tabel.
 - **Acceptance Criteria**:
-  - [ ] Kolom: Time, Type, Price, Quantity, PnL, Commission
+  - [x] Kolom: Time, Type, Price, Quantity, PnL, Commission
   - [ ] Sorting dan pagination jika banyak data
   - [ ] Export ke CSV
 - **PRD Reference**: Section 6.8
+- **Status**: ✅ DONE (basic), ⏳ Pagination (Fase 3)
 
 ### Task 2.4: Metrik Performa Lengkap
 - **Deskripsi**: Hitung dan tampilkan semua metrik performa.
 - **Acceptance Criteria**:
-  - [ ] Total Return, Annualized Return
-  - [ ] Max Drawdown, Sharpe Ratio, Sortino Ratio
-  - [ ] Total Trades, Win Rate, Profit Factor, Expectancy
-  - [ ] Package `metrics` di Go dengan unit test
+  - [x] Total Return, Annualized Return
+  - [x] Max Drawdown, Sharpe Ratio, Sortino Ratio
+  - [x] Total Trades, Win Rate, Profit Factor, Expectancy
+  - [x] Package `metrics` di Go dengan unit test
 - **PRD Reference**: Section 6.8
+- **Status**: ✅ DONE (Fase 1)
 
 ### Task 2.5: Rule-Based Strategy Builder
 - **Deskripsi**: UI untuk menyusun aturan entry/exit tanpa coding.
@@ -172,26 +185,29 @@ Implementasi Trading Backtesting Framework berbasis WebAssembly (Go) + Web UI (C
   - [ ] Simpan aturan sebagai JSON
   - [ ] Eksekusi rule di engine Go
 - **PRD Reference**: Section 6.2.2
+- **Status**: ⏳ PENDING (Fase 3)
 
 ### Task 2.6: Resampling Timeframe
 - **Deskripsi**: Agregasi OHLC dari timeframe kecil ke besar.
 - **Acceptance Criteria**:
-  - [ ] Fungsi `ResampleCandles(candles []Candle, targetTimeframe string) []Candle` di Go
-  - [ ] Support timeframe: 5m, 15m, 1h, 4h, 1d, 1w
-  - [ ] Agregasi OHLCV yang benar
-  - [ ] Unit test dengan data contoh
-  - [ ] UI dropdown untuk pilih timeframe target
+  - [x] Fungsi `ResampleCandles(candles []Candle, targetTimeframe string) []Candle` di Go
+  - [x] Support timeframe: 5m, 15m, 1h, 4h, 1d, 1w
+  - [x] Agregasi OHLCV yang benar
+  - [x] Unit test dengan data contoh
+  - [x] UI dropdown untuk pilih timeframe target
 - **PRD Reference**: Section 6.7
+- **Status**: ✅ COMPLETED
 
 ### Task 2.7: Optimasi Grid Search (Mode Go)
 - **Deskripsi**: Jalankan backtest untuk kombinasi parameter.
 - **Acceptance Criteria**:
-  - [ ] Fungsi `GridSearch(candles []Candle, baseStrategy Strategy, paramRanges map[string]ParamRange) []GridResult`
-  - [ ] ParamRange: Min, Max, Step (numerik only)
-  - [ ] Hasil: tabel/heatmap metrik per kombinasi
+  - [x] Fungsi `GridSearch(candles []Candle, baseStrategy Strategy, paramRanges map[string]ParamRange) []GridResult`
+  - [x] ParamRange: Min, Max, Step (numerik only)
+  - [x] Hasil: tabel/heatmap metrik per kombinasi
   - [ ] Simpan hasil ke IndexedDB
   - [ ] UI untuk pilih parameter dan rentang
 - **PRD Reference**: Section 6.5.1
+- **Status**: ✅ Backend DONE, ⏳ UI pending
 
 ---
 
